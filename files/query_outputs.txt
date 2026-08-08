@@ -1,0 +1,77 @@
+--- Q1_in_stock_books (SELECT/WHERE) ---
+SELECT title, price_gbp, in_stock
+        FROM books
+        WHERE in_stock = 1
+        LIMIT 5;
+                         title  price_gbp  in_stock
+          A Light in the Attic        0.0         1
+               The Black Maria        0.0         1
+         Shakespeare's Sonnets        0.0         1
+                          Olio        0.0         1
+You can't bury them all: Poems        0.0         1
+
+--- Q2_cheapest_books (ORDER BY/LIMIT) ---
+SELECT title, price_gbp
+        FROM books
+        ORDER BY price_gbp ASC
+        LIMIT 5;
+                         title  price_gbp
+          A Light in the Attic        0.0
+               The Black Maria        0.0
+         Shakespeare's Sonnets        0.0
+                          Olio        0.0
+You can't bury them all: Poems        0.0
+
+--- Q3_distinct_categories (DISTINCT) ---
+SELECT DISTINCT category_name
+        FROM categories
+        ORDER BY category_name;
+     category_name
+           Fiction
+Historical Fiction
+           Mystery
+        Nonfiction
+            Poetry
+
+--- Q4_midrange_price_books (WHERE BETWEEN) ---
+SELECT title, price_gbp
+        FROM books
+        WHERE price_gbp BETWEEN 20 AND 30
+        ORDER BY price_gbp;
+Empty DataFrame
+Columns: [title, price_gbp]
+Index: []
+
+--- Q5_top_rated_books_per_category (JOIN) ---
+SELECT c.category_name, b.title, b.rating, b.price_inr
+        FROM books b
+        JOIN categories c ON b.category_id = c.category_id
+        WHERE b.rating >= 4
+        ORDER BY c.category_name, b.rating DESC
+        LIMIT 10;
+category_name                                    title  rating  price_inr
+      Fiction              Private Paris (Private #10)       5        0.0
+      Fiction             We Love You, Charlie Freeman       5        0.0
+      Fiction                                   Thirst       5        0.0
+      Fiction     The Regional Office Is Under Attack!       5        0.0
+      Fiction Finders Keepers (Bill Hodges Trilogy #2)       5        0.0
+      Fiction                          The Time Keeper       5        0.0
+      Fiction                       Dear Mr. Knightley       5        0.0
+      Fiction  The Silent Sister (Riley MacPherson #1)       5        0.0
+      Fiction                               Siddhartha       5        0.0
+      Fiction                         Digital Fortress       5        0.0
+
+--- Same JOIN, built with pandas.merge (no SQL) ---
+category_name                                    title  rating  price_inr
+      Fiction              Private Paris (Private #10)       5        0.0
+      Fiction             We Love You, Charlie Freeman       5        0.0
+      Fiction                                   Thirst       5        0.0
+      Fiction     The Regional Office Is Under Attack!       5        0.0
+      Fiction Finders Keepers (Bill Hodges Trilogy #2)       5        0.0
+      Fiction                          The Time Keeper       5        0.0
+      Fiction                       Dear Mr. Knightley       5        0.0
+      Fiction  The Silent Sister (Riley MacPherson #1)       5        0.0
+      Fiction                               Siddhartha       5        0.0
+      Fiction                         Digital Fortress       5        0.0
+
+SQL JOIN and pandas.merge return the same book order/titles: True
